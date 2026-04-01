@@ -1,0 +1,100 @@
+/**
+ * CityWork - Element Plus 全局变量覆写
+ *   统一将 Element Plus 默认的鲜艳蓝色主题和圆角组件风格，
+ *   覆写为“数字胶片”与“现代极简”的视觉规范。
+ *
+ * @format
+ */
+
+/* 使用 :root:root 提高选择器权重，确保覆盖动态按需加载的 Element Plus 默认变量 */
+:root:root {
+  /* ================= 品牌主色调 (大地色系) ================= */
+  --el-color-primary: #8c7a6b;
+  /* 基于主色计算的悬浮/点击色阶 (Light 3/5/7/8/9, Dark 2) */
+  --el-color-primary-light-3: #ae9f94;
+  --el-color-primary-light-5: #c6bcb4;
+  --el-color-primary-light-7: #ddd7d3;
+  --el-color-primary-light-8: #e8e4e1;
+  --el-color-primary-light-9: #f3f1f0;
+  --el-color-primary-dark-2: #706256;
+
+  /* ================= 状态色调 ================= */
+  /* 降低状态颜色的饱和度，使其更符合胶片风的高级感，不再刺眼 */
+  --el-color-success: #6b8c7a; /* 灰绿色 */
+  --el-color-success-light-3: #97b0a3;
+  --el-color-success-light-5: #b5c7bd;
+  --el-color-success-light-7: #d2ded8;
+  --el-color-success-light-8: #e1ebe6;
+  --el-color-success-light-9: #f0f4f2;
+  --el-color-success-dark-2: #567062;
+
+  --el-color-warning: #c2996b; /* 暖咖色 */
+  --el-color-warning-light-3: #d4b897;
+  --el-color-warning-light-5: #e0ccb4;
+  --el-color-warning-light-7: #ecdfd1;
+  --el-color-warning-light-8: #f2eae0;
+  --el-color-warning-light-9: #f8f5f0;
+  --el-color-warning-dark-2: #9b7a56;
+
+  --el-color-danger: #c95c5c; /* 锈红色 */
+  --el-color-danger-light-3: #d98d8d;
+  --el-color-danger-light-5: #e3aeae;
+  --el-color-danger-light-7: #efcece;
+  --el-color-danger-light-8: #f4dfdf;
+  --el-color-danger-light-9: #f9efef;
+  --el-color-danger-dark-2: #a14a4a;
+
+  --el-color-error: #c95c5c; /* 同 danger */
+  --el-color-error-light-3: #d98d8d;
+  --el-color-error-light-5: #e3aeae;
+  --el-color-error-light-7: #efcece;
+  --el-color-error-light-8: #f4dfdf;
+  --el-color-error-light-9: #f9efef;
+  --el-color-error-dark-2: #a14a4a;
+
+  --el-color-info: #b0a399; /* 对应高级灰辅助色 */
+  --el-color-info-light-3: #c8bfb8;
+  --el-color-info-light-5: #d8d1cc;
+  --el-color-info-light-7: #e7e3df;
+  --el-color-info-light-8: #efeced;
+  --el-color-info-light-9: #f7f5f4;
+  --el-color-info-dark-2: #8d827a;
+
+  /* ================= 字体与排版 ================= */
+  /* 全局应用 Noto Serif SC 衬线字体 */
+  --el-font-family: "Noto Serif SC", serif;
+  /* 调整字体颜色，使用高级灰替代纯黑 */
+  --el-text-color-primary: #4a4a4a;
+  --el-text-color-regular: #6b6b6b;
+  --el-text-color-secondary: #909090;
+  --el-text-color-placeholder: #b3b3b3;
+  --el-text-color-disabled: #cccccc;
+
+  /* ================= 背景与边框 ================= */
+  /* 将默认的白色背景替换为数字胶片的磨砂白 */
+  --el-bg-color: #fcfbf9;
+  --el-bg-color-page: #f5f4f1;
+  --el-bg-color-overlay: #ffffff; /* 浮层如 Dropdown 可以保留纯白以增加对比度 */
+
+  /* 边框颜色更加柔和 */
+  --el-border-color: #e5e0db;
+  --el-border-color-light: #eeebe8;
+  --el-border-color-lighter: #f6f4f2;
+  --el-border-color-extra-light: #faf9f8;
+
+  --el-fill-color-light: #f5f4f1;
+  --el-fill-color-lighter: #faf9f8;
+
+  /* ================= 圆角与阴影 ================= */
+  /* 现代极简风格：直角或微圆角，去除默认的 4px 圆角 */
+  --el-border-radius-base: 2px;
+  --el-border-radius-small: 0px;
+  --el-border-radius-round: 2px;
+  --el-border-radius-circle: 100%;
+
+  /* 阴影：使用带有大地色调的柔和弥散阴影 */
+  --el-box-shadow: 0 4px 12px rgba(140, 122, 107, 0.08);
+  --el-box-shadow-light: 0 2px 8px rgba(140, 122, 107, 0.06);
+  --el-box-shadow-lighter: 0 1px 4px
+    rgba(140, 122, 107, 0.04);
+}

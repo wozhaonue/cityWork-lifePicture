@@ -25,13 +25,12 @@ onMounted(async () => {
         “数字胶片”与“现代极简”视觉规范验证
       </p>
       
-      <!-- 测试 Tailwind 对 Element Plus 的覆盖能力 -->
+      <!-- 测试全局 CSS 变量是否成功覆盖了 Element Plus 默认样式 -->
       <el-button 
         type="primary" 
         size="large" 
-        class="!bg-earth-primary !border-earth-primary hover:!bg-earth-secondary transition-colors duration-300"
       >
-        Tailwind + Element 按钮验证
+        Element Plus 全局主题验证
       </el-button>
     </div>
   </div>
