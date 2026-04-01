@@ -5,8 +5,14 @@
 ## /document (项目文档目录)
 - `frontend_architecture_design.md`: 前端架构设计文档，包含模块划分、技术栈选型、UI/UX 设计规范（“数字胶片”与“现代极简”风格）、核心数据模型及交互链路。
 - `implementation_plan.md`: AI 开发者前端实施计划，拆分为 8 个带有测试验证步骤的阶段，包含针对特定 UI 风格的指令。
+- `ai_developer_rules.md`: AI 开发者行为准则，规定了 AI 助手在开发过程中的交互风格和约束条件。
+- `tech_stack_selection.md`: 详细的前端技术栈选型理由与架构图。
+- `development_challenges_and_optimizations.md`: 记录开发过程中的技术难点、解决方案及性能优化策略。
 - `progress.md`: 实施进度记录，追踪每个阶段任务的完成情况。
 - `architecture.md`: 记录项目中每个文件和目录的具体作用与功能边界。
+
+## / (项目根目录)
+- `README.md`: 项目的总览文档，包含项目背景、核心价值、技术栈介绍以及本地环境启动指南。
 
 ## /instance (UI 静态原型目录)
 用于存储纯前端三件套（HTML/CSS/JS）生成的静态页面，主要用于在正式开发前确认 UI 样式和整体风格走向。
