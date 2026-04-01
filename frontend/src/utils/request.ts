@@ -1,6 +1,7 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
+import 'element-plus/theme-chalk/el-message.css' // 引入 ElMessage 的样式，修复在 TS 中调用无样式的问题
 
 // 创建 Axios 实例
 const request: AxiosInstance = axios.create({
@@ -16,9 +17,13 @@ request.interceptors.request.use(
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
+    console.log('请求拦截器resolve发出');
+    
     return config
   },
   (error: AxiosError) => {
+    console.log('请求拦截器reject发出');
+    console.log(error);
     return Promise.reject(error)
   }
 )
@@ -32,9 +37,13 @@ request.interceptors.response.use(
     // 此处可根据后端约定的业务状态码进行全局处理
     // 假设业务代码 code 不为 0 时表示业务逻辑错误（根据实际项目约定调整）
     // 暂不拦截业务状态，直接返回 data 以便调用方处理
+    console.log('响应拦截器resolve发出');
+    console.log(res);
     return res
   },
   (error: AxiosError) => {
+    console.log('响应拦截器reject发出');
+    console.log(error);
     let errorMessage = '网络请求失败，请稍后重试'
 
     if (error.response) {

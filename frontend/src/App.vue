@@ -4,10 +4,10 @@ import request from './utils/request'
 
 // Element Plus 自动按需引入，无需手动导入 ElButton
 
-// 步骤 1.4 验证：发起一个对不存在的接口路径的请求
+// 步骤 1.4 验证：发起一个会明确返回 404 状态码的外部接口请求，以触发响应拦截器的 reject 链
 onMounted(async () => {
   try {
-    await request.get('/api/not-exist-path-test')
+    await request.get('https://httpbin.org/status/404')
   } catch (error) {
     console.log('测试请求拦截到的错误：', error)
   }
