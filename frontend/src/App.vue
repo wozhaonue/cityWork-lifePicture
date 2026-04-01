@@ -1,5 +1,17 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import request from './utils/request'
+
 // Element Plus 自动按需引入，无需手动导入 ElButton
+
+// 步骤 1.4 验证：发起一个对不存在的接口路径的请求
+onMounted(async () => {
+  try {
+    await request.get('/api/not-exist-path-test')
+  } catch (error) {
+    console.log('测试请求拦截到的错误：', error)
+  }
+})
 </script>
 
 <template>
