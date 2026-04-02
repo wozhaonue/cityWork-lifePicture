@@ -86,7 +86,7 @@
 
 - **职责**：负责全局用户的账号注册、登录鉴权、状态保持及个人信息维护，是整个系统的前置守卫。
 - **核心功能**：
-  - **登录与注册 (`/user/login`, `/user/register`)**：对接 `user-controller` 实现鉴权。登录成功后，将后端返回的 Token（如有）或 Session 状态与前端状态库（及 `localStorage`）绑定，并在 Axios 请求拦截器中统一注入鉴权凭证。
+  - **登录与注册 (`/user/login`, `/user/register`)**：对接 `user-controller` 实现鉴权。基于 Session-Cookie 机制，登录成功后后端通过响应头 `Set-Cookie` 下发 Session ID，浏览器自动保存并在后续请求头中自动携带，前端无需手动维护 Token。前端仅需在状态库中保存当前登录用户信息（`UserVO`）。
   - **状态初始化与路由守卫**：在应用初始化或路由跳转时，获取当前登录用户信息（`getLoginUser`），写入 `UserStore`。结合 Vue Router 全局前置守卫（`beforeEach`），拦截未登录用户对空间或管理中枢的访问，强制重定向至登录页。
   - **个人中心 (`/user/profile`)**：提供用户基础信息（如头像、昵称、简介等）的展示与修改闭环。
 
@@ -149,4 +149,5 @@
 > - 第二次迭代调整：在模块化设计中显式补充“身份认证与用户中心模块”，完善登录注册、路由守卫与个人信息的闭环设计。
 > - 第三次迭代调整：新增“UI/UX 设计规范”章节，明确确立“数字胶片 (Digital Film)”与“现代极简 + 杂志排版 (Modern Editorial)”的系统级视觉语言，并详细定义了核心页面的设计范式与微交互要求。
 
-- 第四次迭代调整：引入企业级工程化方案，新增基于 `IntersectionObserver` 的 `v-image-pro` 全局智能图片懒加载指令（含重试与兜底机制），并将网络层重构为 Axios 插件化架构。
+> - 第四次迭代调整：引入企业级工程化方案，新增基于 `IntersectionObserver` 的 `v-image-pro` 全局智能图片懒加载指令（含重试与兜底机制），并将网络层重构为 Axios 插件化架构。
+> - 第五次迭代调整：修改鉴权机制，由基于 Token 的鉴权修改为基于 Session-Cookie 的鉴权方案。前端移除 Token 手动注入逻辑，依靠浏览器自动管理 `Set-Cookie` 及跨域携带凭证（`withCredentials`），并在 Axios 拦截器中主要处理未登录状态（如 401 拦截）与前端状态和路由的联动。

@@ -34,4 +34,4 @@
 
 - `.env.development`: 本地开发环境的配置文件，包含 API 请求地址（如 `VITE_API_BASE_URL`）等环境变量。
 - `README.md`: 前端工程专门的本地运行指南，包含依赖安装、启动步骤和环境变量配置说明。
-- `src/utils/request.ts`: 基于 Axios 封装的全局 HTTP 客户端实例，统一管理请求/响应拦截器、Token 鉴权及错误状态码的 UI 弹窗提示。
+- `src/utils/request.ts`: 基于 Axios 封装的全局 HTTP 客户端实例，统一管理跨域凭证携带（withCredentials）、未登录状态处理及错误状态码的 UI 弹窗提示。

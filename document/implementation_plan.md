@@ -31,7 +31,7 @@
 ### 步骤 1.4：配置插件化网络请求层
 
 - **指令**：安装 Axios。采用**插件化架构**设计 HTTP 客户端实例。创建核心 Axios 实例，并编写独立的拦截器插件：
-  1. **Auth Plugin**：注入 Token 及路由守卫联动。
+  1. **Auth Plugin**：配置跨域请求携带 Cookie（`withCredentials: true`）及处理未登录状态码（如 401 跳转登录页）与路由守卫联动。
   2. **Error Plugin**：统一处理错误状态码并结合 Element Plus 弹窗提示。
   3. **Retry & Deduplication Plugin**：实现请求去重（防止快速连点）与超时重试机制。
 - **验证**：在入口组件中连续发起三次相同的模拟数据请求，在浏览器的 Network 面板中检查是否只有一次实际的网络请求发出（去重插件生效）；发起一个会超时的请求，验证是否会自动重试并最终弹出错误提示框。
@@ -71,8 +71,8 @@
 
 ### 步骤 3.2：集成状态保持与请求鉴权
 
-- **指令**：编写对接后端 `user-controller` 的登录逻辑。登录成功后，将返回的 Token 存入本地存储（localStorage）并更新到 UserStore 中。修改阶段一封装的 Axios 实例，在请求拦截器中读取 Token 并注入到请求头中。
-- **验证**：执行一次模拟的登录请求，随后发起一个任意的业务接口请求，在浏览器的 Network 面板中检查该业务请求的 Request Headers 中是否成功携带了正确的 Token。
+- **指令**：编写对接后端 `user-controller` 的登录逻辑。基于 Session-Cookie 机制，登录成功后后端自动通过 `Set-Cookie` 下发凭证。前端需确保 Axios 实例已配置跨域携带凭证（`withCredentials: true`），并在获取到当前登录用户信息后更新到 UserStore 中。
+- **验证**：执行一次真实的登录请求，随后发起一个获取当前登录用户的接口请求，在浏览器的 Network 面板中检查该业务请求的 Request Headers 中是否成功携带了 Cookie 字段。
 
 ### 步骤 3.3：搭建页面基础路由
 
