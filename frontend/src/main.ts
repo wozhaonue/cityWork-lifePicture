@@ -4,5 +4,12 @@ import '@fontsource/noto-serif-sc/700.css' // 引入本地 Noto Serif SC 字体 
 import './assets/styles/main.css' // 引入 Tailwind CSS 和全局样式
 import './assets/styles/element-theme.css' // 引入 Element Plus 全局主题覆盖变量
 import App from './App.vue'
+import router from './router'
+import store from './store'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(store)
+app.use(router)
+
+app.mount('#app')

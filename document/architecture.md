@@ -40,3 +40,11 @@
   - `retry.ts`: 超时重试插件，在遇到网络异常或 `ECONNABORTED` 时自动发起重试（默认 3 次，间隔 1 秒）。
   - `auth.ts`: 身份鉴权插件，主要负责拦截 401 状态码，并触发未登录提示及后续的路由重定向。
   - `error.ts`: 全局错误处理插件，统一收口并格式化网络层和业务层异常状态码，结合 Element Plus 弹出用户友好的错误提示。
+- `src/router/index.ts`: Vue Router 的核心配置文件，定义了项目的基础路由和组件映射（如默认的 Home 页面）。
+- `src/store/index.ts`: Pinia 状态管理的核心入口文件，用于初始化并导出 Pinia 实例。
+- `src/store/modules/`: 依据领域（Domain）划分的独立状态模块目录：
+  - `user.ts`: UserStore，管理当前登录用户信息、登录与登出状态等。
+  - `space.ts`: SpaceStore，管理个人/团队空间列表、当前空间信息及切换逻辑等。
+  - `picture.ts`: PictureStore，管理图片列表、上传状态及当前预览图片等。
+- `src/views/`: 页面级视图组件存放目录。
+  - `Home.vue`: 默认的占位主页组件，目前用于挂载路由和测试 Pinia 状态工具的显示。
