@@ -4,6 +4,7 @@ import request from '../utils/request'
 import { useUserStore } from '@/store/modules/user'
 import { useSpaceStore } from '@/store/modules/space'
 import { usePictureStore } from '@/store/modules/picture'
+import { CITY_LIST } from '@/constant/city'
 
 // 仅用于触发 Pinia 的开发者工具显示 (Pinia 是懒加载的，只有在组件中被使用时才会在 DevTools 中注册)
 const userStore = useUserStore()
@@ -46,8 +47,16 @@ const testRetry = () => {
         CityWork 影像资产
       </h1>
       <p class="text-earth-primary mb-8 font-serif italic">
-        插件化 Axios 架构验证 (Step 1.4)
+        基础架构验证页
       </p>
+
+      <!-- 验证 Step 2.2：全局城市静态数据 -->
+      <div class="mb-6 p-4 bg-digital-bg rounded-lg border border-earth-secondary/20">
+        <h2 class="text-lg font-bold text-premium-gray mb-2 font-serif">Step 2.2 验证 (静态数据)</h2>
+        <p class="text-earth-primary text-sm">
+          全局城市数据已加载，当前地级市常量数组长度为：<span class="text-blue-600 font-bold text-base">{{ CITY_LIST.length }}</span>
+        </p>
+      </div>
       
       <div class="flex flex-col gap-4">
         <!-- 按钮用于触发测试 -->
