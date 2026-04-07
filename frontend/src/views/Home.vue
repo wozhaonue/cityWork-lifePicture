@@ -5,11 +5,16 @@ import { useUserStore } from '@/store/modules/user'
 import { useSpaceStore } from '@/store/modules/space'
 import { usePictureStore } from '@/store/modules/picture'
 import { CITY_LIST } from '@/constant/city'
+import { TEAM_STORY_LIST } from '@/constant/team-story'
 
 // 仅用于触发 Pinia 的开发者工具显示 (Pinia 是懒加载的，只有在组件中被使用时才会在 DevTools 中注册)
 const userStore = useUserStore()
 const spaceStore = useSpaceStore()
 const pictureStore = usePictureStore()
+
+// --- 验证 Step 2.3：团队故事静态数据 ---
+console.log('--- 触发团队故事 Mock 数据验证 ---')
+console.table(TEAM_STORY_LIST)
 
 // Element Plus 自动按需引入，无需手动导入 ElButton
 
