@@ -46,6 +46,9 @@
   - `user.ts`: UserStore，管理当前登录用户信息、登录与登出状态等。
   - `space.ts`: SpaceStore，管理个人/团队空间列表、当前空间信息及切换逻辑等。
   - `picture.ts`: PictureStore，管理图片列表、上传状态及当前预览图片等。
+- `src/directives/`: Vue 全局自定义指令存放目录。
+  - `index.ts`: 指令注册入口，负责将所有的自定义指令集中挂载到 Vue 实例上。
+  - `v-image-pro.ts`: 图片高级处理指令，包含 IntersectionObserver 懒加载、`decoding="async"` 异步解码、错误加载重试（3次）以及最终的默认兜底图替换逻辑。
 - `src/constant/`: 静态常量与 Mock 数据存放目录，用于解决缺少后端接口时的全局数据依赖。
   - `city.ts`: 中国地级市名称静态数组文件，主要用于在强制城市标签等表单中提供下拉选择框的数据源。
   - `team-story.ts`: 全局团队故事静态对象数组（Mock），用于模拟展示团队空间的故事摘要、案例分享及对应链接。

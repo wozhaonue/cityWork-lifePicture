@@ -7,6 +7,17 @@ import { usePictureStore } from '@/store/modules/picture'
 import { CITY_LIST } from '@/constant/city'
 import { TEAM_STORY_LIST } from '@/constant/team-story'
 
+// 生成 50 张测试图片数据 (为了验证懒加载)
+// 第 5 张 (索引 4) 为错误地址，用于验证重试和兜底机制
+const lazyImages = ref(
+  Array.from({ length: 50 }).map((_, index) => {
+    if (index === 4) {
+      return 'https://this-is-an-invalid-image-url.com/error-image.jpg'
+    }
+    return `https://picsum.photos/seed/${index + 1}/300/200`
+  })
+)
+
 // 仅用于触发 Pinia 的开发者工具显示 (Pinia 是懒加载的，只有在组件中被使用时才会在 DevTools 中注册)
 const userStore = useUserStore()
 const spaceStore = useSpaceStore()
@@ -62,16 +73,31 @@ const testRetry = () => {
           全局城市数据已加载，当前地级市常量数组长度为：<span class="text-blue-600 font-bold text-base">{{ CITY_LIST.length }}</span>
         </p>
       </div>
-      
-      <div class="flex flex-col gap-4">
-        <!-- 按钮用于触发测试 -->
-        <el-button type="primary" size="large" @click="testDedupe">
-          验证防抖与去重 (发送3次，控制台查看)
-        </el-button>
-        <el-button type="warning" size="large" @click="testRetry">
-          验证超时与重试 (强制超时并重试3次)
-        </el-button>
+
+      <!-- 验证 Step 2.4：全局图片懒加载 -->
+      <div class="mb-6 p-4 bg-digital-bg rounded-lg border border-earth-secondary/20">
+        <h2 class="text-lg font-bold text-premium-gray mb-2 font-serif">Step 2.4 验证 (图片懒加载)</h2>
+        <p class="text-earth-primary text-sm">
+          向下滚动查看效果。第 5 张图片将模拟加载失败，重试 3 次后显示 SVG 兜底图。
+        </p>
       </div>
+      
+      <!-- 渲染 50 张测试图片 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+        <div 
+          v-for="(imgSrc, index) in lazyImages" 
+          :key="index" 
+          class="aspect-[3/2] bg-gray-100 rounded overflow-hidden shadow-sm border border-gray-200 flex items-center justify-center relative"
+        >
+          <span class="absolute text-gray-400 text-xs top-2 left-2 z-10 bg-white/80 px-2 py-1 rounded">#{{ index + 1 }}</span>
+          <img 
+            v-image-pro="imgSrc" 
+            class="w-full h-full object-cover transition-opacity duration-300" 
+            :alt="`测试图片 ${index + 1}`" 
+          />
+        </div>
+      </div>
+
     </div>
   </div>
 </template>

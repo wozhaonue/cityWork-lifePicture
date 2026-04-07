@@ -6,10 +6,12 @@ import './assets/styles/element-theme.css' // 引入 Element Plus 全局主题�
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import directives from './directives'
 
 const app = createApp(App)
 
 app.use(store)
 app.use(router)
+app.use(directives)
 
 app.mount('#app')
