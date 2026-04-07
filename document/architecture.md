@@ -34,4 +34,9 @@
 
 - `.env.development`: 本地开发环境的配置文件，包含 API 请求地址（如 `VITE_API_BASE_URL`）等环境变量。
 - `README.md`: 前端工程专门的本地运行指南，包含依赖安装、启动步骤和环境变量配置说明。
-- `src/utils/request.ts`: 基于 Axios 封装的全局 HTTP 客户端实例，统一管理跨域凭证携带（withCredentials）、未登录状态处理及错误状态码的 UI 弹窗提示。
+- `src/utils/request/index.ts`: 基于 Axios 封装的全局 HTTP 客户端核心实例，负责配置基础参数（如 baseURL, timeout, withCredentials）并按严格顺序挂载各个独立功能插件。
+- `src/utils/request/plugins/`: Axios 拦截器插件目录，采用插件化架构（Plugin-based Architecture）将面条式拦截器解耦为独立模块：
+  - `dedupe.ts`: 请求防抖与去重插件，利用 `AbortController` 和请求特征指纹，自动取消短时间内的重复请求。
+  - `retry.ts`: 超时重试插件，在遇到网络异常或 `ECONNABORTED` 时自动发起重试（默认 3 次，间隔 1 秒）。
+  - `auth.ts`: 身份鉴权插件，主要负责拦截 401 状态码，并触发未登录提示及后续的路由重定向。
+  - `error.ts`: 全局错误处理插件，统一收口并格式化网络层和业务层异常状态码，结合 Element Plus 弹出用户友好的错误提示。
