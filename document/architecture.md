@@ -34,6 +34,8 @@
 
 - `.env.development`: 本地开发环境的配置文件，包含 API 请求地址（如 `VITE_API_BASE_URL`）等环境变量。
 - `README.md`: 前端工程专门的本地运行指南，包含依赖安装、启动步骤和环境变量配置说明。
+- `openapi.config.js`: `@umijs/openapi` 工具的配置文件，用于定义从后端获取 OpenAPI 规范 JSON 的路径以及自动生成代码的输出位置。
+- `src/api/`: 基于后端 Swagger/OpenAPI 规范文档，由 `npm run openapi` 脚本自动生成的接口请求层目录。包含全量的 TypeScript 类型定义（如 `typings.d.ts`）和各个业务领域的控制器请求方法（如 `userController.ts`, `pictureController.ts` 等），使得前端调用接口时具备绝对的类型安全。
 - `src/utils/request/index.ts`: 基于 Axios 封装的全局 HTTP 客户端核心实例，负责配置基础参数（如 baseURL, timeout, withCredentials）并按严格顺序挂载各个独立功能插件。
 - `src/utils/request/plugins/`: Axios 拦截器插件目录，采用插件化架构（Plugin-based Architecture）将面条式拦截器解耦为独立模块：
   - `dedupe.ts`: 请求防抖与去重插件，利用 `AbortController` 和请求特征指纹，自动取消短时间内的重复请求。

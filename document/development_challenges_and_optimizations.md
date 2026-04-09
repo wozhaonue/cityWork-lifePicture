@@ -82,6 +82,16 @@
   - **具体实现**：例如在登录页面中，内层的输入框（`<el-input>`）和按钮统一使用 `16px` 的圆角（Tailwind 的 `rounded-2xl`），而它们外层的卡片容器则使用 `20px` 的圆角（Tailwind 的 `rounded-[20px]`），使内层和外层保持大约 `4px` 的视觉差值。
 - **实现了什么效果**：使得嵌套元素的边角弧度在视觉上保持平行与协调，避免了生硬的直角或违和的嵌套感，大幅提升了整体 UI 的精致感和“数字胶片”风格的细腻度。
 
+### 1.8 难点：使用 @umijs/openapi 自动生成接口代码时的环境依赖与路径配置坑点
+
+- **问题描述（使用场景）**：在前后端分离开发中，为了避免手动编写大量接口请求代码和 TypeScript 类型定义，我们引入了 `@umijs/openapi` 工具来基于后端的 Swagger/OpenAPI 文档自动生成前端 API 代码（`npm run openapi`）。在此过程中遇到了两个核心报错：
+  1. `Error: Cannot find module 'tslib'`：执行脚本时直接崩溃。
+  2. `FetchError: invalid json response body ... Unexpected token '<', "<!DOCTYPE "... is not valid JSON`：脚本运行成功但解析失败。
+- **解决方案（具体如何解决的）**：
+  - **针对 tslib 缺失**：`@umijs/openapi` 在底层运行依赖 TypeScript 的辅助库 `tslib`。但如果项目中未显式安装，Node.js 运行时会抛出模块未找到错误。解决方法是显式安装：`npm install -D @umijs/openapi tslib`。
+  - **针对 JSON 解析失败**：这是因为在 `openapi.config.js` 的 `schemaPath` 中，误填了供人类阅读的 Swagger HTML 页面地址（如 `/api/doc.html`）。该工具需要的是机器可读的 JSON 规范文件。解决方法是将 `schemaPath` 指向真实的 JSON 地址（例如 Knife4j 提供的 `/api/v2/api-docs` 或 OpenAPI 3 的 `/api/v3/api-docs`）。
+- **实现了什么效果**：成功清除了生成障碍，顺利在 `src/api/` 目录下自动生成了包含完整 TypeScript 类型声明的 API 请求模块（如 `userController.ts` 等），极大提升了后续对接后端的开发效率，同时确保了前后端接口字段类型的绝对同步。
+
 ## 2. 核心功能开发阶段
 
 _(待开发过程中补充...)_

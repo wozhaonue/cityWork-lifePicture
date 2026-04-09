@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "openapi": "node openapi.config.js",
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview"
@@ -20,12 +21,14 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^24.12.2",
+    "@umijs/openapi": "^1.14.1",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/tsconfig": "^0.9.0",
     "autoprefixer": "^10.4.27",
     "postcss": "^8.5.8",
     "sass": "^1.98.0",
     "tailwindcss": "^4.2.2",
+    "tslib": "^2.8.1",
     "typescript": "~5.9.3",
     "unplugin-auto-import": "^21.0.0",
     "unplugin-vue-components": "^32.0.0",
