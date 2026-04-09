@@ -54,3 +54,5 @@
   - `team-story.ts`: 全局团队故事静态对象数组（Mock），用于模拟展示团队空间的故事摘要、案例分享及对应链接。
 - `src/views/`: 页面级视图组件存放目录。
   - `Home.vue`: 默认的占位主页组件，目前用于挂载路由、测试 Pinia 状态以及验证全局常量。
+  - `user/UserLoginPage.vue`: 登录页面组件，基于 Element Plus 表单实现账号密码输入与校验，采用“数字胶片”现代极简设计。
+  - `user/UserRegisterPage.vue`: 注册页面组件，基于 Element Plus 表单实现账号、密码及确认密码的输入与校验。

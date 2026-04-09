@@ -58,13 +58,18 @@ const testRetry = () => {
 
 <template>
   <div class="min-h-screen flex flex-col items-center justify-center bg-digital-bg p-8">
-    <div class="bg-white p-10 rounded-xl shadow-sm border border-earth-secondary/20 text-center max-w-lg">
+    <div class="bg-white p-10 rounded-xl shadow-sm border border-earth-secondary/20 text-center max-w-lg mb-8">
       <h1 class="text-3xl font-bold text-premium-gray mb-4 font-serif tracking-wide">
         CityWork 影像资产
       </h1>
       <p class="text-earth-primary mb-8 font-serif italic">
         基础架构验证页
       </p>
+
+      <div class="mb-6 p-4 bg-digital-bg rounded-lg border border-earth-secondary/20 flex gap-4 justify-center">
+        <el-button type="primary" @click="$router.push('/user/login')">前往登录页 (Step 3.1)</el-button>
+        <el-button @click="$router.push('/user/register')">前往注册页 (Step 3.1)</el-button>
+      </div>
 
       <!-- 验证 Step 2.2：全局城市静态数据 -->
       <div class="mb-6 p-4 bg-digital-bg rounded-lg border border-earth-secondary/20">
