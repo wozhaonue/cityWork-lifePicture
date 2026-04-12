@@ -15,7 +15,7 @@ export const setupErrorPlugin = (instance: AxiosInstance) => {
       // 如果需要拦截业务层的非零 code（比如 code !== 0 表示业务错误），可以在此处扩展
       // if (res.code !== 0) { ... throw new Error() ... }
       
-      return res
+      return response;
     },
     (error: AxiosError) => {
       console.error('[Error Plugin] 拦截器捕获异常:', error)
@@ -64,8 +64,7 @@ export const setupErrorPlugin = (instance: AxiosInstance) => {
         type: 'error',
         duration: 3000,
       })
-
-      return Promise.reject(error)
+      return Promise.reject(error);
     }
   )
 }

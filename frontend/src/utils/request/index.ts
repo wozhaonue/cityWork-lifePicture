@@ -9,7 +9,7 @@ import { setupErrorPlugin } from './plugins/error'
 
 // 创建核心 Axios 实例
 const request: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api', // 基础路径，由环境变量覆盖
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8123', // 基础路径，由环境变量覆盖
   timeout: 3000, // 为演示超时重试，先将全局超时限制缩短到 3 秒
   withCredentials: true, // 允许跨域请求携带 Cookie
 })

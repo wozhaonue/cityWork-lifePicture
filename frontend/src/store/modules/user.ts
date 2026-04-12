@@ -1,17 +1,26 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
+import type {LoginUserVO} from '@/api/user/type'
+import { getLoginUserUsingGet } from '@/api/userController';
 
 export const useUserStore = defineStore('user', () => {
-  // 状态：用户信息、登录状态等
-  const userInfo = ref(null)
-
-  // 动作：登录、登出、获取用户信息等
-  const login = async () => {}
-  const logout = async () => {}
+  // 状态：用户个人信息（不应包括权限信息）
+  const userInfo = ref<LoginUserVO | null>(null);
+  // setter: 设置用户个人信息
+  const setUserInfo = (info: LoginUserVO | null) => {
+    userInfo.value = info;
+  }
+  // 远程抓取数据fetchUserInfo
+  const fetchUserInfo = async () => {
+    const res = await getLoginUserUsingGet();
+    if(res.data.code === 0){
+      setUserInfo(res.data.data);
+    }
+  }
 
   return {
     userInfo,
-    login,
-    logout
+    setUserInfo,
+    fetchUserInfo
   }
 })
