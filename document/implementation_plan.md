@@ -71,8 +71,10 @@
 
 ### 步骤 3.2：集成状态保持与请求鉴权
 
-- **指令**：编写对接后端 `user-controller` 的登录逻辑。基于 Session-Cookie 机制，登录成功后后端自动通过 `Set-Cookie` 下发凭证。前端需确保 Axios 实例已配置跨域携带凭证（`withCredentials: true`），并在获取到当前登录用户信息后更新到 UserStore 中。
-- **验证**：执行一次真实的登录请求，随后发起一个获取当前登录用户的接口请求，在浏览器的 Network 面板中检查该业务请求的 Request Headers 中是否成功携带了 Cookie 字段。
+- **指令**：编写对接 `frontend/src/api/userController.ts` 的登录 API 的逻辑。基于 Session-Cookie 机制，登录成功后后端自动通过 `Set-Cookie` 下发凭证。当登录成功后，即 `res.data.code === 0` 时，调用 `frontend/src/store/modules/user.ts` 中的 `setUserInfo` 方法来进行用户信息的记录。前端需确保 Axios 实例已配置跨域携带凭证（`withCredentials: true`）。在业务代码的 `catch` 异常捕获块中，需过滤掉因防抖插件触发的取消异常（`axios.isCancel`）。
+- **验证**：
+  1. 使用真实测试账号（账号：`wsb01`，密码：`Wsbxy132.`）执行一次登录请求，验证页面是否提示登录成功、跳转至首页，并在浏览器的 Network 面板中检查请求是否成功。
+  2. 输入错误的账号密码，**快速连续点击登录按钮**，验证是否只会触发一次网络请求，并且页面上只弹出一次后端返回的“用户不存在或者密码错误”的业务提示，而不会弹出前端 `catch` 块中的兜底“登录异常”提示。
 
 ### 步骤 3.3：搭建页面基础路由
 

@@ -8,11 +8,12 @@ const pendingMap = new Map<string, AbortController>()
  * 生成请求的唯一 key
  */
 const getRequestKey = (config: InternalAxiosRequestConfig) => {
+  const dataString = typeof config.data === 'string' ? config.data : JSON.stringify(config.data)
   return [
     config.method,
     config.url,
     JSON.stringify(config.params),
-    JSON.stringify(config.data)
+    dataString
   ].join('&')
 }
 
@@ -54,10 +55,10 @@ export const setupDedupePlugin = (instance: AxiosInstance) => {
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       // 通过自定义配置 `dedupe` 允许某些请求跳过去重，默认开启去重
-      const isDedupeEnabled = (config as any).dedupe !== false
-      if (isDedupeEnabled) {
+      // const isDedupeEnabled = (config as any).dedupe !== false
+      // if (isDedupeEnabled) {
         config = addPendingRequest(config)
-      }
+      // }
       return config
     },
     (error: AxiosError) => {

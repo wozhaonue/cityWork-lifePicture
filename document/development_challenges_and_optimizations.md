@@ -92,9 +92,18 @@
   - **针对 JSON 解析失败**：这是因为在 `openapi.config.js` 的 `schemaPath` 中，误填了供人类阅读的 Swagger HTML 页面地址（如 `/api/doc.html`）。该工具需要的是机器可读的 JSON 规范文件。解决方法是将 `schemaPath` 指向真实的 JSON 地址（例如 Knife4j 提供的 `/api/v2/api-docs` 或 OpenAPI 3 的 `/api/v3/api-docs`）。
 - **实现了什么效果**：成功清除了生成障碍，顺利在 `src/api/` 目录下自动生成了包含完整 TypeScript 类型声明的 API 请求模块（如 `userController.ts` 等），极大提升了后续对接后端的开发效率，同时确保了前后端接口字段类型的绝对同步。
 
-## 2. 核心功能开发阶段
+### 1.9 难点：请求防抖去重插件导致的拦截器状态流转异常
 
-_(待开发过程中补充...)_
+- **问题描述（使用场景）**：在实现登录页面时，如果使用错误的账号密码发起请求，第一次会正常提示“用户不存在或者密码错误”（业务逻辑拦截，走 resolve 链路）。但在不刷新页面的情况下，再次点击登录按钮，有时会弹出“登录异常，请稍后重试”（走 reject 链路），并且该请求被取消（Cancel）。
+- **根本原因分析**：
+  - **拦截器执行顺序与 Axios 的数据转换**：Axios 的全局拦截器执行顺序为：请求拦截器按挂载倒序执行，响应拦截器按正序执行。
+  - **`config.data` 序列化时机不一致**：在发起请求时，`dedupe.ts` 插件的请求拦截器中 `config.data` 还是一个 JSON 对象，生成特征 Key 时使用了 `JSON.stringify(config.data)`。但是，在响应返回后，`dedupe.ts` 的响应拦截器中拿到的 `config.data` 已经被 Axios 底层的 `transformRequest` 自动转换成了字符串！
+  - 这导致在响应拦截器中执行 `JSON.stringify(config.data)` 时，相当于对一个字符串再次进行了序列化，生成的 Key 与请求时的 Key 不一致。
+  - **最终引发的连锁反应**：因为 Key 匹配失败，第一次失败的请求在结束时未能从 `pendingMap` 中被清除。当用户第二次发起相同请求时，`dedupe.ts` 的请求拦截器发现该 Key 依然存在，误以为是重复的并发请求，于是立即调用 `AbortController.abort()` 阻断了请求。被阻断的请求抛出 `CancelError`，穿透了所有的响应拦截器（走 reject 链路），最终被 `UserLoginPage.vue` 的 `catch` 捕获，弹出了“登录异常”的错误提示。
+- **解决方案（具体如何解决的）**：
+  - **修复去重特征 Key 的生成逻辑**：在 `dedupe.ts` 中，获取 `config.data` 时增加类型判断：`const dataString = typeof config.data === 'string' ? config.data : JSON.stringify(config.data)`。确保无论是在请求拦截器还是响应拦截器中，生成的 Key 绝对一致。
+  - **架构级优化：中断 Promise 链**：原本在业务层（如 `UserLoginPage.vue` 的 `catch` 块）需要手动增加 `if (!axios.isCancel(error))` 来忽略取消报错，这会导致底层网络逻辑污染业务代码。优化方案是在 `error.ts` 全局响应拦截器中，当捕获到 `axios.isCancel(error)` 时，直接返回一个 pending 状态的 Promise（`return new Promise(() => {})`）。
+- **实现了什么效果**：彻底修复了重复请求拦截器失效的 Bug，统一了错误提示的行为。通过 pending Promise 的架构级优化，被取消的请求会像“黑洞”一样安静地停滞，业务层的 `await` 或 `catch` 永远不会被触发。现在无论用户怎么快速连点，前端都会以最稳定的方式提示业务错误，并且有效拦截多余的并发请求，业务代码也变得更加纯粹和极简。
 
 ### 2.1 状态管理与数据流转
 

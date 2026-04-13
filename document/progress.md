@@ -25,3 +25,4 @@
 - [x] **2026-04-01** 确立全局 UI 视觉参考规范，指定 `instance/screenshots` 作为 UI 开发的绝对参考基准。
 - [x] **2026-04-08** **步骤 3.1：实现登录与注册页面** - 创建 `UserLoginPage.vue` 和 `UserRegisterPage.vue`，采用“数字胶片”极简风格。实现了 Element Plus 表单及账号密码长度与格式的校验逻辑。并在路由中配置便于验证。
 - [x] **2026-04-09** **步骤 3.2前置准备：自动生成 API 接口代码** - 解决并记录了 `@umijs/openapi` 工具的 `tslib` 缺失及 JSON 解析报错问题。成功配置 `openapi.config.js`，运行脚本并在 `src/api` 目录下自动生成了所有带有 TypeScript 强类型的后端控制器请求方法（如 `userController` 等），并对生成文件中的 `@` 别名路径进行了编辑器提示的适配。
+- [x] **2026-04-12** **步骤 3.2：集成状态保持与请求鉴权** - 修改了实施计划中的指令以匹配自动生成的 API。在 `UserLoginPage.vue` 中调用了 `frontend/src/api/userController.ts` 的登录 API，并在登录成功（code === 0）时通过 `frontend/src/store/modules/user.ts` 的 `setUserInfo` 存储用户状态。使用真实测试账号（wsb01）完成了登录并跳转至首页的验证。修复了由于 `dedupe` 插件防抖导致的 `CancelError` 穿透至业务层的报错异常，增加了业务层的 `isCancel` 兜底过滤。

@@ -3,14 +3,19 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { User, Lock } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { userLoginUsingPost } from '@/api/userController'
+import { useUserStore } from '@/store/modules/user'
+import axios from 'axios'
 
 const router = useRouter()
+const userStore = useUserStore()
 const formRef = ref<FormInstance>()
 const loading = ref(false)
 
 const form = reactive({
   userAccount: '',
-  userPassword: ''
+  userPassword: '',
+  remember: false
 })
 
 const rules = reactive<FormRules>({
@@ -26,14 +31,35 @@ const rules = reactive<FormRules>({
 
 const handleLogin = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
       loading.value = true
-      // 模拟登录请求
-      setTimeout(() => {
-        loading.value = false
-        // router.push('/') // 暂时不跳转，因为只是页面验证阶段
-      }, 1000)
+
+      // 优雅替代方案：使用 .catch 捕获底层的网络异常（并返回 null）
+      // 全局拦截器 error.ts 已处理错误弹窗，业务层只需捕获后静默中断即可
+      const res = await userLoginUsingPost({
+        userAccount: form.userAccount,
+        userPassword: form.userPassword
+      }).catch(() => null)
+
+      // 如果请求被 dedupe 插件取消（返回了 pending Promise 黑洞），
+      // 下方的代码永远不会执行。这意味着 loading 状态会继续保留给【第一次正在请求中】的调用，这是完美的副作用！
+
+      if (!res) {
+        loading.value = false // 网络异常时关闭 loading
+        return // 异常已被全局处理，业务直接阻断
+      }
+
+      loading.value = false // 请求成功到达业务层，关闭 loading
+
+      // 业务逻辑判断
+      if (res.data.code === 0) {
+        userStore.setUserInfo(res.data.data ?? null)
+        ElMessage.success('登录成功')
+        router.push('/')
+      } else {
+        ElMessage.error(res.data.message || '登录失败')
+      }
     } else {
       console.log('error submit!', fields)
     }

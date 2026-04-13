@@ -1,5 +1,4 @@
 import type { AxiosInstance, AxiosError } from 'axios'
-import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 
 /**

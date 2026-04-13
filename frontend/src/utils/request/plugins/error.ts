@@ -1,6 +1,5 @@
 import type { AxiosInstance, AxiosError } from 'axios'
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 
 /**
  * 核心：全局错误处理插件
@@ -23,7 +22,9 @@ export const setupErrorPlugin = (instance: AxiosInstance) => {
       // 忽略被 Dedupe Plugin 取消的请求错误
       if (axios.isCancel(error)) {
         console.log('[Error Plugin] 忽略取消的请求:', error.message)
-        return Promise.reject(error)
+        // 核心优化：返回一个 pending 状态的 Promise，中断 Promise 链
+        // 这样业务层的 catch 块将永远不会接收到这个错误，无需手动写 if (!axios.isCancel(error))
+        return new Promise(() => {})
       }
 
       let errorMessage = '网络请求失败，请稍后重试'
@@ -34,9 +35,9 @@ export const setupErrorPlugin = (instance: AxiosInstance) => {
           case 400:
             errorMessage = '请求参数错误 (400)'
             break
-          case 401:
-            // 401 已在 Auth Plugin 中处理并弹出了对应提示，所以这里不再重复弹窗
-            return Promise.reject(error)
+          // case 401:
+          // 自定义40100 已在 Auth Plugin 中处理并弹出了对应提示，且后端设置响应码为200，
+          //   return Promise.reject(error)
           case 403:
             errorMessage = '拒绝访问 (403)'
             break
