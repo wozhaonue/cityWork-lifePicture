@@ -53,7 +53,7 @@
   - `picture.ts`: PictureStore，管理图片列表、上传状态及当前预览图片等。
 - `src/directives/`: Vue 全局自定义指令存放目录。
   - `index.ts`: 指令注册入口，负责将所有的自定义指令集中挂载到 Vue 实例上。
-  - `v-image-pro.ts`: 图片高级处理指令，包含 IntersectionObserver 懒加载、`decoding="async"` 异步解码、错误加载重试（3次）以及最终的默认兜底图替换逻辑。
+  - `v-image-pro.ts`: 图片高级处理指令，包含 IntersectionObserver 懒加载、`decoding="async"` 异步解码、错误加载重试（3 次）以及最终的默认兜底图替换逻辑。
 - `src/constant/`: 静态常量与 Mock 数据存放目录，用于解决缺少后端接口时的全局数据依赖。
   - `city.ts`: 中国地级市名称静态数组文件，主要用于在强制城市标签等表单中提供下拉选择框的数据源。
   - `team-story.ts`: 全局团队故事静态对象数组（Mock），用于模拟展示团队空间的故事摘要、案例分享及对应链接。
@@ -61,3 +61,7 @@
   - `Home.vue`: 默认的占位主页组件，目前用于挂载路由、测试 Pinia 状态以及验证全局常量。
   - `user/UserLoginPage.vue`: 登录页面组件，基于 Element Plus 表单实现账号密码输入与校验，采用“数字胶片”现代极简设计。
   - `user/UserRegisterPage.vue`: 注册页面组件，基于 Element Plus 表单实现账号、密码及确认密码的输入与校验。
+  - `space/PersonalSpacePage.vue`: 个人空间页面组件，基于 CSS Grid 网格布局实现“数字胶片”风格的图片相框排列，集成 `el-skeleton` 骨架屏。
+  - `space/TeamSpacePage.vue`: 团队协作空间页面组件，基于 CSS3 原生 Columns 属性实现轻量级瀑布流布局及防截断处理，集成 `el-skeleton` 骨架屏。
+  - `gallery/PublicGalleryPage.vue`: 公共图库页面组件，预留 ECharts-GL 3D 地图底座容器，采用绝对定位和玻璃拟态实现悬浮的视差滚动影像画报层。
+  - `admin/AdminCenterPage.vue`: 管理中枢页面组件，摒弃传统表格边框，采用非对称 Grid 混排与杂志虚线风格实现极简的数据大盘与内容审核列表。

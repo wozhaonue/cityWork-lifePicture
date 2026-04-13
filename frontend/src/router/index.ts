@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/Home.vue') // 暂时指向 Home.vue，后续修改为具体的布局组件
+    component: () => import('@/views/Home.vue') // 暂时指向 Home.vue，后续步骤 3.4 修改为全局布局组件
   },
   {
     path: '/user/login',
@@ -17,6 +17,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/user/register',
     name: 'UserRegister',
     component: () => import('@/views/user/UserRegisterPage.vue')
+  },
+  {
+    path: '/space/personal',
+    name: 'PersonalSpace',
+    component: () => import('@/views/space/PersonalSpacePage.vue')
+  },
+  {
+    path: '/space/team',
+    name: 'TeamSpace',
+    component: () => import('@/views/space/TeamSpacePage.vue')
+  },
+  {
+    path: '/gallery/public',
+    name: 'PublicGallery',
+    component: () => import('@/views/gallery/PublicGalleryPage.vue')
+  },
+  {
+    path: '/admin',
+    name: 'AdminCenter',
+    component: () => import('@/views/admin/AdminCenterPage.vue')
   }
 ]
 
