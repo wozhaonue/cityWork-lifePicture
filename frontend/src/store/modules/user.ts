@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type {LoginUserVO} from '@/api/user/type'
+import type {LoginUserVO} from '@/api/typ'
 import { getLoginUserUsingGet } from '@/api/userController';
 
 export const useUserStore = defineStore('user', () => {
@@ -23,4 +23,6 @@ export const useUserStore = defineStore('user', () => {
     setUserInfo,
     fetchUserInfo
   }
+}, {
+  persist: true
 })

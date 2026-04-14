@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import GlobalHeader from '@/components/GlobalHeader.vue'
-import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore } from '@/store/modules/user'
 
 const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
 
-// 定义侧边栏导航
-const navLinks = [
+// 原始菜单配置 (UI 配置)
+const menuConfigs = [
   {
     path: '/space/personal',
     name: '画册管理',
@@ -28,6 +32,25 @@ const navLinks = [
     iconPath: 'M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z'
   }
 ]
+
+// 动态计算菜单：基于 vue-router 路由表的 meta 信息过滤
+const navLinks = computed(() => {
+  const routes = router.getRoutes()
+  const userRole = userStore.userInfo?.userRole || 'user'
+  
+  return menuConfigs.filter(menu => {
+    // 找到对应的路由对象
+    const matchedRoute = routes.find(r => r.path === menu.path)
+    if (matchedRoute) {
+      // 检查路由是否需要管理员权限
+      const requiresAdmin = matchedRoute.meta?.requiresAdmin
+      if (requiresAdmin && userRole !== 'admin') {
+        return false // 不是管理员则不显示
+      }
+    }
+    return true
+  })
+})
 </script>
 
 <template>
