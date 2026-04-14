@@ -14,8 +14,7 @@ const loading = ref(false)
 
 const form = reactive({
   userAccount: '',
-  userPassword: '',
-  remember: false
+  userPassword: ''
 })
 
 const rules = reactive<FormRules>({
@@ -100,7 +99,7 @@ const toRegister = () => {
           />
         </el-form-item>
         
-        <el-form-item prop="userPassword" class="mt-6">
+        <el-form-item prop="userPassword" class="mt-6 mb-8">
           <el-input
             v-model="form.userPassword"
             type="password"
@@ -110,11 +109,6 @@ const toRegister = () => {
             class="rounded-xl!"
           />
         </el-form-item>
-
-        <div class="flex items-center justify-between mt-2 mb-8 px-1">
-          <el-checkbox v-model="form.remember" class="!text-gray-500 font-light">记住我</el-checkbox>
-          <a href="#" class="text-sm text-earth-primary hover:text-earth-secondary transition-colors font-light">忘记密码？</a>
-        </div>
 
         <el-form-item>
           <el-button

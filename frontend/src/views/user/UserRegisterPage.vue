@@ -3,6 +3,8 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { User, Lock, View, EditPen } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { userRegisterUsingPost } from '@/api/userController'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const formRef = ref<FormInstance>()
@@ -41,14 +43,32 @@ const rules = reactive<FormRules>({
 
 const handleRegister = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
       loading.value = true
-      // 模拟注册请求
-      setTimeout(() => {
+      
+      // 调用真实注册接口，使用 catch 拦截底层错误（与登录逻辑保持一致）
+      const res = await userRegisterUsingPost({
+        userAccount: form.userAccount,
+        userPassword: form.userPassword,
+        checkPassword: form.checkPassword
+      }).catch(() => null)
+
+      // 如果请求被 dedupe 插件取消，res 为 null，直接阻断
+      if (!res) {
         loading.value = false
-        // router.push('/user/login')
-      }, 1000)
+        return
+      }
+
+      loading.value = false
+
+      // 处理业务逻辑结果
+      if (res.data.code === 0) {
+        ElMessage.success('注册成功，请登录')
+        router.push('/user/login')
+      } else {
+        ElMessage.error(res.data.message || '注册失败')
+      }
     } else {
       console.log('error submit!', fields)
     }
